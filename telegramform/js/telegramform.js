@@ -1,7 +1,7 @@
 (function ($) {
   $(".contact-form").submit(function (event) {
     event.preventDefault();
-
+   
     // Сообщения формы
     let successSendText = "Сообщение успешно отправлено";
     let errorSendText = "Сообщение не отправлено. Попробуйте еще раз!";
@@ -13,6 +13,7 @@
     let form = $("#" + $(this).attr("id"))[0];
     let fd = new FormData(form);
     $.ajax({
+     
       url: "/telegramform/php/send-message-to-telegram.php",
       type: "POST",
       data: fd,
@@ -20,18 +21,19 @@
       contentType: false,
       beforeSend: () => {
         $(".preloader").addClass("preloader_active");
-        	
-      document.getElementById('form-contact').reset();
+      
+       
       },
       success: function success(res) {
         $(".preloader").removeClass("preloader_active");
-
+       
         // Посмотреть на статус ответа, если ошибка
         // console.log(res);
         let respond = $.parseJSON(res);
 
         if (respond === "SUCCESS") {
           message.text(successSendText).css("color", "#21d4bb");
+          document.getElementById('form-contact').reset();
           setTimeout(() => {
             message.text("");
           }, 4000);
@@ -44,6 +46,7 @@
           message.text(errorSendText).css("color", "#d42121");
           setTimeout(() => {
             message.text("");
+           
           }, 4000);
         }
       }
